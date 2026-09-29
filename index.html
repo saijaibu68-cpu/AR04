@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>นักออกแบบน้อย แก้ปัญหาเก่ง (ป.1)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #fef3c7 100%);
+            touch-action: manipulation;
+        }
+        .bounce-gentle {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .pop-in {
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .btn-card {
+            transition: all 0.2s ease;
+        }
+        .btn-card:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-slate-800 antialiased selection:bg-yellow-200">
+
+    <!-- Header / Status Bar -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b-4 border-yellow-400">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showScreen('home-screen')">
+                <div class="w-10 h-10 bg-yellow-400 rounded-2xl flex items-center justify-center text-xl shadow">
+                    🤖
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold text-slate-800 leading-tight">นักออกแบบน้อย</h1>
+                    <p class="text-xs text-slate-500 font-semibold">แก้ปัญหาเก่ง (ป.1)</p>
+                </div>
+            </div>
+
+            <!-- Score & Sound controls -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-amber-100 border border-amber-300 rounded-full px-3 py-1 flex items-center space-x-2">
+                    <span class="text-yellow-500 text-lg">⭐</span>
+                    <span id="star-count" class="font-bold text-amber-900 text-lg">0</span>
+                </div>
+                <button onclick="toggleAudio()" id="audio-btn" class="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-200">
+                    <i class="fa-solid fa-volume-high text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto w-full px-4 py-6 flex-grow flex flex-col justify-center">
+
+        <!-- SCREEN 1: Home / Menu -->
+        <section id="home-screen" class="space-y-6 pop-in">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl text-center border-4 border-sky-200 relative overflow-hidden">
+                <div class="inline-block bg-sky-100 text-sky-700 text-sm font-bold px-4 py-1.5 rounded-full mb-3">
+                    📘 วิทยาการคำนวณ & เทคโนโลยี ป.1
+                </div>
+                <h2 class="text-2xl md:text-4xl font-extrabold text-slate-800 mb-3">
+                    มารู้จักการออกแบบแก้ปัญหากันเถอะ! 💡
+                </h2>
+                <p class="text-slate-600 text-base md:text-lg max-w-xl mx-auto mb-6">
+                    เรียนรู้ขั้นตอนการคิดแก้ปัญหาในชีวิตประจำวัน สนุกไปกับเกมจับคู่ เรียงลำดับ และพาหุ่นยนต์เดินทาง!
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                    <button onclick="showScreen('lesson-screen')" class="btn-card bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white font-bold text-lg p-5 rounded-2xl shadow-lg border-b-4 border-blue-700 flex items-center justify-center space-x-3">
+                        <span class="text-3xl">📖</span>
+                        <span>1. เรียนรู้บทเรียน (3 ขั้นตอน)</span>
+                    </button>
+                    
+                    <button onclick="startGames()" class="btn-card bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-500 hover:to-green-600 text-white font-bold text-lg p-5 rounded-2xl shadow-lg border-b-4 border-green-700 flex items-center justify-center space-x-3">
+                        <span class="text-3xl">🎮</span>
+                        <span>2. ตะลุยเกมฝึกทักษะ (4 ด่าน)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Features Cards -->
+            <div class="grid grid-cols-3 gap-3 text-center">
+                <div class="bg-white/60 backdrop-blur rounded-2xl p-3 border border-white">
+                    <div class="text-2xl mb-1">🔍</div>
+                    <div class="text-xs font-bold text-slate-700">มองหาปัญหา</div>
+                </div>
+                <div class="bg-white/60 backdrop-blur rounded-2xl p-3 border border-white">
+                    <div class="text-2xl mb-1">📝</div>
+                    <div class="text-xs font-bold text-slate-700">วางแผนแก้ปัญหา</div>
+                </div>
+                <div class="bg-white/60 backdrop-blur rounded-2xl p-3 border border-white">
+                    <div class="text-2xl mb-1">✅</div>
+                    <div class="text-xs font-bold text-slate-700">ตรวจทานผลลัพธ์</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: Interactive Lesson -->
+        <section id="lesson-screen" class="hidden space-y-6 pop-in">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-indigo-200">
+                <!-- Lesson Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <span id="lesson-step-tag" class="bg-indigo-100 text-indigo-700 font-bold px-3 py-1 rounded-full text-xs">
+                        บทเรียนที่ 1/3
+                    </span>
+                    <button onclick="showScreen('home-screen')" class="text-slate-400 hover:text-slate-600 text-sm font-bold">
+                        <i class="fa-solid fa-xmark text-lg"></i> ออก
+                    </button>
+                </div>
+
+                <!-- Lesson Content Area -->
+                <div id="lesson-content" class="min-h-[280px] flex flex-col items-center justify-center text-center space-y-4">
+                    <!-- Dynamic Lesson Content Inserted Here -->
+                </div>
+
+                <!-- Lesson Navigation Controls -->
+                <div class="flex justify-between items-center pt-6 border-t border-slate-100 mt-6">
+                    <button id="prev-lesson-btn" onclick="changeLesson(-1)" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-200 disabled:opacity-40">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> ย้อนกลับ
+                    </button>
+                    <div id="lesson-dots" class="flex space-x-2">
+                        <!-- Dots rendered dynamically -->
+                    </div>
+                    <button id="next-lesson-btn" onclick="changeLesson(1)" class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 shadow-md">
+                        ถัดไป <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: Game Level 1 - Spot the Problem -->
+        <section id="game-level-1" class="hidden space-y-4 pop-in">
+            <div class="bg-white rounded-3xl p-5 md:p-7 shadow-xl border-4 border-sky-300">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">
+                        ด่านที่ 1: ค้นหาปัญหา 🔍
+                    </span>
+                    <span id="g1-progress" class="text-xs font-bold text-slate-500">ข้อ 1/3</span>
+                </div>
+
+                <div class="text-center mb-6">
+                    <h3 id="g1-question" class="text-xl md:text-2xl font-extrabold text-slate-800 mb-2">
+                        สถานการณ์ปัญหาคืออะไร?
+                    </h3>
+                    <p class="text-sm text-slate-500">อ่านหรือฟังสถานการณ์ แล้วเลือกข้อที่เป็น "ปัญหา"</p>
+                </div>
+
+                <!-- Scenario Image / Card -->
+                <div id="g1-scenario-card" class="bg-sky-50 rounded-2xl p-6 text-center border border-sky-100 mb-6">
+                    <div id="g1-emoji" class="text-6xl mb-2 bounce-gentle">☔</div>
+                    <div id="g1-story" class="text-lg font-bold text-slate-700">"น้องส้มกำลังจะเดินกลับบ้าน แต่จู่ๆ ฝนก็ตกหนักมาก!"</div>
+                </div>
+
+                <!-- Options -->
+                <div id="g1-options" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <!-- Dynamic Buttons -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 4: Game Level 2 - Step Ordering -->
+        <section id="game-level-2" class="hidden space-y-4 pop-in">
+            <div class="bg-white rounded-3xl p-5 md:p-7 shadow-xl border-4 border-amber-300">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">
+                        ด่านที่ 2: เรียงลำดับขั้นตอน 🔢
+                    </span>
+                    <span id="g2-title-step" class="text-xs font-bold text-slate-500">เรื่อง: การแปรงฟัน</span>
+                </div>
+
+                <div class="text-center mb-4">
+                    <h3 class="text-xl font-extrabold text-slate-800 mb-1">
+                        กดเลือกขั้นตอนตามลำดับให้ถูกต้อง (1 ➔ 2 ➔ 3)
+                    </h3>
+                    <p class="text-xs text-slate-500">หากเลือกผิด ลำดับจะรีเซ็ตให้ลองใหม่นะจ๊ะ!</p>
+                </div>
+
+                <!-- Current Sequence slots -->
+                <div class="flex justify-center items-center space-x-2 md:space-x-4 mb-6">
+                    <div id="slot-1" class="w-20 h-20 md:w-24 md:h-24 bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl flex flex-col items-center justify-center p-2 text-center">
+                        <span class="text-xs text-amber-500 font-bold">ขั้นที่ 1</span>
+                        <div class="slot-content text-2xl font-bold text-slate-700">?</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-amber-300"></i>
+                    <div id="slot-2" class="w-20 h-20 md:w-24 md:h-24 bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl flex flex-col items-center justify-center p-2 text-center">
+                        <span class="text-xs text-amber-500 font-bold">ขั้นที่ 2</span>
+                        <div class="slot-content text-2xl font-bold text-slate-700">?</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-amber-300"></i>
+                    <div id="slot-3" class="w-20 h-20 md:w-24 md:h-24 bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl flex flex-col items-center justify-center p-2 text-center">
+                        <span class="text-xs text-amber-500 font-bold">ขั้นที่ 3</span>
+                        <div class="slot-content text-2xl font-bold text-slate-700">?</div>
+                    </div>
+                </div>
+
+                <!-- Selectable step buttons -->
+                <div id="g2-step-buttons" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <!-- Dynamic Buttons -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 5: Game Level 3 - Tool Selection -->
+        <section id="game-level-3" class="hidden space-y-4 pop-in">
+            <div class="bg-white rounded-3xl p-5 md:p-7 shadow-xl border-4 border-emerald-300">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+                        ด่านที่ 3: เลือกเครื่องมือแก้ปัญหา 🛠️
+                    </span>
+                    <span id="g3-progress" class="text-xs font-bold text-slate-500">ข้อ 1/3</span>
+                </div>
+
+                <div class="text-center mb-4">
+                    <h3 id="g3-problem-title" class="text-xl md:text-2xl font-extrabold text-slate-800 mb-2">
+                        มีน้ำเฮลซ์บลูบอยหกเลอะเทอะบนพื้นห้อง!
+                    </h3>
+                    <p class="text-sm text-slate-500">เราควรใช้อุปกรณ์หรือเครื่องมือใดแก้ปัญหานี้?</p>
+                </div>
+
+                <div id="g3-problem-icon" class="text-6xl text-center py-4 bg-emerald-50 rounded-2xl mb-6">
+                    🧹
+                </div>
+
+                <!-- Tool Choices -->
+                <div id="g3-tools-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Dynamic Choices -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 6: Game Level 4 - Robot Path Logic -->
+        <section id="game-level-4" class="hidden space-y-4 pop-in">
+            <div class="bg-white rounded-3xl p-5 md:p-7 shadow-xl border-4 border-purple-300">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full">
+                        ด่านที่ 4: พาหุ่นยนต์ไปแก้ปัญหา 🤖
+                    </span>
+                    <button onclick="resetRobotGrid()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-3 py-1 rounded-lg">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> เริ่มใหม่
+                    </button>
+                </div>
+
+                <div class="text-center mb-3">
+                    <h3 class="text-lg font-bold text-slate-800">
+                        ช่วยหุ่นยนต์ปุ่มกด 🤖 เดินไปเก็บขยะ 🧃 แยกใส่ถังขยะ!
+                    </h3>
+                    <p class="text-xs text-slate-500">กดปุ่มลูกศรเพื่อวางแผนขั้นตอนการเดิน</p>
+                </div>
+
+                <!-- Grid & Controls Wrapper -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                    <!-- 3x3 Grid Board -->
+                    <div class="flex justify-center">
+                        <div id="robot-grid" class="grid grid-cols-3 gap-2 bg-slate-200 p-2.5 rounded-2xl border-2 border-slate-300 w-64 h-64">
+                            <!-- Cells dynamically rendered -->
+                        </div>
+                    </div>
+
+                    <!-- Command Sequence & Direction Controls -->
+                    <div class="space-y-4">
+                        <!-- Program Command Stack -->
+                        <div class="bg-purple-50 p-3 rounded-2xl border border-purple-200">
+                            <div class="text-xs font-bold text-purple-700 mb-1">คำสั่งที่เลือกไว้ (สูงสุด 4 ขั้น):</div>
+                            <div id="command-queue" class="flex space-x-2 h-10 items-center justify-start bg-white p-2 rounded-xl border border-purple-100 overflow-x-auto">
+                                <span class="text-xs text-slate-400">กดลูกศรด้านล่าง...</span>
+                            </div>
+                        </div>
+
+                        <!-- Arrow Pad Buttons -->
+                        <div class="grid grid-cols-3 gap-2 max-w-[180px] mx-auto">
+                            <div></div>
+                            <button onclick="addCommand('up')" class="bg-purple-500 hover:bg-purple-600 active:scale-95 text-white font-bold p-3 rounded-xl shadow text-center">
+                                ⬆️
+                            </button>
+                            <div></div>
+                            <button onclick="addCommand('left')" class="bg-purple-500 hover:bg-purple-600 active:scale-95 text-white font-bold p-3 rounded-xl shadow text-center">
+                                ⬅️
+                            </button>
+                            <button onclick="addCommand('down')" class="bg-purple-500 hover:bg-purple-600 active:scale-95 text-white font-bold p-3 rounded-xl shadow text-center">
+                                ⬇️
+                            </button>
+                            <button onclick="addCommand('right')" class="bg-purple-500 hover:bg-purple-600 active:scale-95 text-white font-bold p-3 rounded-xl shadow text-center">
+                                ➡️
+                            </button>
+                            <div></div>
+                            <button onclick="clearCommands()" class="bg-rose-100 hover:bg-rose-200 active:scale-95 text-rose-600 font-bold p-2 rounded-xl text-xs flex items-center justify-center">
+                                ❌ ลบ
+                            </button>
+                            <div></div>
+                        </div>
+
+                        <button onclick="runRobotProgram()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl shadow-lg border-b-4 border-emerald-700 text-sm">
+                            🚀 เล่นคำสั่งตามที่วางแผน!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 7: Completion & Certificate -->
+        <section id="summary-screen" class="hidden space-y-6 pop-in">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-2xl border-4 border-yellow-300 text-center relative overflow-hidden">
+                <div class="text-5xl mb-2 bounce-gentle">🏆</div>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-1">
+                    เก่งมาก! คุณคือ "นักออกแบบน้อยแก้ปัญหาเก่ง"
+                </h2>
+                <p class="text-slate-600 text-sm mb-4">ผ่านการทดสอบทักษะการแก้ปัญหาเบื้องต้น ระดับชั้น ป.1</p>
+
+                <!-- Score Summary Badge -->
+                <div class="bg-gradient-to-r from-amber-100 to-yellow-100 border border-yellow-300 rounded-2xl p-4 max-w-sm mx-auto mb-6">
+                    <div class="text-xs text-amber-800 font-bold mb-1">ดาวที่สะสมได้ทั้งหมด</div>
+                    <div class="flex items-center justify-center space-x-2">
+                        <span class="text-3xl">⭐</span>
+                        <span id="final-star-count" class="text-4xl font-black text-amber-900">0</span>
+                        <span class="text-lg font-bold text-amber-700">/ 12 ดวง</span>
+                    </div>
+                </div>
+
+                <!-- Interactive Certificate Card -->
+                <div class="bg-sky-50 border-2 border-dashed border-sky-300 rounded-2xl p-5 mb-6 text-left max-w-md mx-auto">
+                    <div class="text-xs font-bold text-sky-600 uppercase tracking-wide mb-2">เกียรติบัตรรับรองความสามารถ</div>
+                    <div class="space-y-2">
+                        <label class="block text-xs text-slate-500 font-semibold">พิมพ์ชื่อนักเรียนเพื่อสร้างเกียรติบัตร:</label>
+                        <input type="text" id="student-name-input" placeholder="ด.ช. / ด.ญ. รักเรียน เก่งมาก" class="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-400 text-sm">
+                    </div>
+                    <div id="certificate-preview" class="hidden mt-4 pt-4 border-t border-sky-200 text-center">
+                        <p class="text-xs text-slate-500">มอบให้แก่</p>
+                        <p id="cert-student-name" class="text-lg font-bold text-sky-900 my-1"></p>
+                        <p class="text-xs text-slate-600">"ผ่านหลักสูตรการออกแบบแก้ปัญหาเบื้องต้น (ป.1)"</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="updateCertificate()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-6 py-3 rounded-xl shadow">
+                        🪪 สร้างเกียรติบัตร
+                    </button>
+                    <button onclick="startGames()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl shadow">
+                        🔄 เล่นใหม่อีกครั้ง
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white/60 backdrop-blur border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+        <p>สื่อการเรียนรู้อินเทอร์แอคทีฟ วิชา เทคโนโลยี (วิทยาการคำนวณ) ชั้นประถมศึกษาปีที่ 1</p>
+    </footer>
+
+    <script>
+        // Global Game State
+        let state = {
+            stars: 0,
+            soundEnabled: true,
+            currentLessonIdx: 0,
+            g1Idx: 0,
+            g2Idx: 0,
+            g3Idx: 0,
+            g2CurrentSequence: [],
+            robotPos: { r: 0, c: 0 },
+            robotGoal: { r: 2, c: 2 },
+            robotCommands: []
+        };
+
+        // Web Audio API Synth for Sound Effects (Without External File Dependency)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!state.soundEnabled) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'click') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } else if (type === 'win') {
+                // Happy Arpeggio
+                const notes = [440, 554.37, 659.25, 880];
+                notes.forEach((freq, idx) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g);
+                    g.connect(audioCtx.destination);
+                    o.frequency.value = freq;
+                    g.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.1);
+                    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.1 + 0.25);
+                    o.start(audioCtx.currentTime + idx * 0.1);
+                    o.stop(audioCtx.currentTime + idx * 0.1 + 0.25);
+                });
+            }
+        }
+
+        function toggleAudio() {
+            state.soundEnabled = !state.soundEnabled;
+            const btn = document.getElementById('audio-btn');
+            btn.innerHTML = state.soundEnabled ? 
+                '<i class="fa-solid fa-volume-high text-sm"></i>' : 
+                '<i class="fa-solid fa-volume-xmark text-sm text-rose-500"></i>';
+        }
+
+        function addStars(num) {
+            state.stars += num;
+            document.getElementById('star-count').innerText = state.stars;
+            document.getElementById('final-star-count').innerText = state.stars;
+        }
+
+        // Screen Navigation Engine
+        function showScreen(screenId) {
+            playSound('click');
+            const screens = ['home-screen', 'lesson-screen', 'game-level-1', 'game-level-2', 'game-level-3', 'game-level-4', 'summary-screen'];
+            screens.forEach(id => {
+                const el = document.getElementById(id);
+                if (id === screenId) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+        }
+
+        // -------------------------------------------------------------
+        // LESSON CONTENT DATA (Designed for 1st Graders)
+        // -------------------------------------------------------------
+        const lessonsData = [
+            {
+                title: "1. ปัญหาคืออะไร? 🤔",
+                emoji: "❓",
+                bg: "bg-sky-50",
+                text: "ในชีวิตประจำวัน สิ่งที่ทำให้เรา **ลำบาก ไม่สะดวก หรือตกอยู่ในอันตราย** เราเรียกว่า **'ปัญหา'** เช่น ฝนตกแล้วไม่มีร่ม, เชือกรองเท้าหลุด, หรือกระเป๋านักเรียนหนักเกินไป",
+                tip: "💡 การสังเกตรอบตัว คือจุดเริ่มต้นของการแก้ปัญหา!"
+            },
+            {
+                title: "2. 3 ขั้นตอนการแก้ปัญหา 🛠️",
+                emoji: "📐",
+                bg: "bg-indigo-50",
+                text: "เมื่อเจอปัญหา เราใช้ 3 ขั้นตอนนี้เลย:<br><b>1. มองหาปัญหา</b> (เกิดอะไรขึ้น?)<br><b>2. วางแผนแก้ปัญหา</b> (คิดวิธีแก้ไข/เลือกเครื่องมือ)<br><b>3. ลงมือทำและตรวจทาน</b> (ทำตามแผน แล้วดูว่าได้ผลไหม)",
+                tip: "💡 คิดอย่างเป็นขั้นตอน ช่วยให้แก้ปัญหาได้สำเร็จง่ายขึ้น!"
+            },
+            {
+                title: "3. การเรียงลำดับขั้นตอน (Algorithm) 🐾",
+                emoji: "👣",
+                bg: "bg-emerald-50",
+                text: "การทำสิ่งต่างๆ ให้สำเร็จ ต้องทำทีละขั้นตอนตามลำดับก่อน-หลัง เช่น การแปรงฟัน ต้องหยิบแปรง ➔ บีบยาสีฟัน ➔ แล้วจึงแปรงฟัน",
+                tip: "💡 ถ้าข้ามขั้นตอนหรือสลับลำดับ ผลลัพธ์อาจจะผิดพลาดได้นะ!"
+            }
+        ];
+
+        function renderLesson() {
+            const data = lessonsData[state.currentLessonIdx];
+            document.getElementById('lesson-step-tag').innerText = `บทเรียนที่ ${state.currentLessonIdx + 1}/${lessonsData.length}`;
+            
+            const contentDiv = document.getElementById('lesson-content');
+            contentDiv.innerHTML = `
+                <div class="text-6xl mb-3 bounce-gentle">${data.emoji}</div>
+                <h3 class="text-2xl font-extrabold text-slate-800 mb-2">${data.title}</h3>
+                <div class="p-4 ${data.bg} rounded-2xl border border-slate-200 text-slate-700 text-base md:text-lg max-w-lg mb-3">
+                    ${data.text}
+                </div>
+                <div class="text-xs bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full font-bold">
+                    ${data.tip}
+                </div>
+            `;
+
+            // Render Nav Dots
+            const dotsContainer = document.getElementById('lesson-dots');
+            dotsContainer.innerHTML = lessonsData.map((_, idx) => `
+                <div class="w-3 h-3 rounded-full ${idx === state.currentLessonIdx ? 'bg-indigo-600 scale-125' : 'bg-slate-200'} transition-all"></div>
+            `).join('');
+
+            // Button states
+            document.getElementById('prev-lesson-btn').disabled = state.currentLessonIdx === 0;
+            const nextBtn = document.getElementById('next-lesson-btn');
+            if (state.currentLessonIdx === lessonsData.length - 1) {
+                nextBtn.innerHTML = 'ไปเริ่มตะลุยเกม! 🎮';
+                nextBtn.onclick = startGames;
+            } else {
+                nextBtn.innerHTML = 'ถัดไป <i class="fa-solid fa-arrow-right ml-1"></i>';
+                nextBtn.onclick = () => changeLesson(1);
+            }
+        }
+
+        function changeLesson(dir) {
+            playSound('click');
+            state.currentLessonIdx += dir;
+            renderLesson();
+        }
+
+        function startGames() {
+            state.g1Idx = 0;
+            state.g2Idx = 0;
+            state.g3Idx = 0;
+            showScreen('game-level-1');
+            loadG1Question();
+        }
+
+        // -------------------------------------------------------------
+        // LEVEL 1: SPOT THE PROBLEM (ค้นหาปัญหา)
+        // -------------------------------------------------------------
+        const g1Questions = [
+            {
+                emoji: "🌧️",
+                story: "น้องส้มกำลังจะเดินกลับบ้าน แต่จู่ๆ ฝนตกหนักมาก!",
+                correct: "เปียกฝนและกลับบ้านไม่ได้",
+                options: ["เปียกฝนและกลับบ้านไม่ได้", "ได้กินไอศกรีมแสนอร่อย", "อยากนอนหลับพักผ่อน"]
+            },
+            {
+                emoji: "👟",
+                story: "น้องเต้กำลังวิ่งเล่นในสวน แล้วหกล้มเพราะเชือกรองเท้าหลุด",
+                correct: "เชือกรองเท้าหลุดทำให้หกล้ม",
+                options: ["รองเท้าสวยเกินไป", "เชือกรองเท้าหลุดทำให้หกล้ม", "ท้องฟ้าแจ่มใสมาก"]
+            },
+            {
+                emoji: "✏️",
+                story: "ก้องต้องการวาดรูปในห้องเรียน แต่หาดินสอในกระเป๋าไม่เจอ",
+                correct: "ไม่มีดินสอใช้เขียนวาดรูป",
+                options: ["กระดาษวาดรูปแผ่นใหญ่ไป", "ไม่มีดินสอใช้เขียนวาดรูป", "เพื่อนๆ นั่งเรียบร้อย"]
+            }
+        ];
+
+        function loadG1Question() {
+            const q = g1Questions[state.g1Idx];
+            document.getElementById('g1-progress').innerText = `ข้อ ${state.g1Idx + 1}/${g1Questions.length}`;
+            document.getElementById('g1-emoji').innerText = q.emoji;
+            document.getElementById('g1-story').innerText = `"${q.story}"`;
+
+            // Shuffle options
+            const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+            const container = document.getElementById('g1-options');
+            container.innerHTML = shuffled.map(opt => `
+                <button onclick="checkG1Answer('${opt}')" class="btn-card bg-sky-50 hover:bg-sky-100 border-2 border-sky-200 text-sky-900 font-bold p-4 rounded-2xl shadow text-base">
+                    ${opt}
+                </button>
+            `).join('');
+        }
+
+        function checkG1Answer(selected) {
+            const q = g1Questions[state.g1Idx];
+            if (selected === q.correct) {
+                playSound('correct');
+                addStars(1);
+                state.g1Idx++;
+                if (state.g1Idx < g1Questions.length) {
+                    loadG1Question();
+                } else {
+                    // Level 1 Complete -> Go to Level 2
+                    showScreen('game-level-2');
+                    loadG2Question();
+                }
+            } else {
+                playSound('wrong');
+                showToast("ยังไม่ใช่ปัญหานะครับ ลองคิดใหม่อีกที! 🤔");
+            }
+        }
+
+        // -------------------------------------------------------------
+        // LEVEL 2: STEP SEQUENCING (เรียงลำดับขั้นตอน)
+        // -------------------------------------------------------------
+        const g2Data = [
+            {
+                title: "เรื่อง: การแปรงฟัน 🪥",
+                steps: [
+                    { id: 1, text: "1. บีบยาสีฟันใส่แปรง", icon: "🧴" },
+                    { id: 2, text: "2. ถูแปรงฟันให้ทั่วปาก", icon: "🪥" },
+                    { id: 3, text: "3. บ้วนน้ำสะอาดล้างปาก", icon: "🥛" }
+                ]
+            },
+            {
+                title: "เรื่อง: การล้างมือก่อนทานอาหาร 🧼",
+                steps: [
+                    { id: 1, text: "1. ชโลมมือด้วยน้ำเปล่า", icon: "💧" },
+                    { id: 2, text: "2. ถูสบู่ให้เกิดฟอง", icon: "🧼" },
+                    { id: 3, text: "3. ล้างน้ำเปล่าและเช็ดให้แห้ง", icon: "👏" }
+                ]
+            }
+        ];
+
+        function loadG2Question() {
+            const data = g2Data[state.g2Idx];
+            state.g2CurrentSequence = [];
+            document.getElementById('g2-title-step').innerText = data.title;
+            
+            // Clear Slots
+            for (let i = 1; i <= 3; i++) {
+                document.querySelector(`#slot-${i} .slot-content`).innerHTML = '?';
+            }
+
+            // Shuffle step buttons
+            const shuffled = [...data.steps].sort(() => Math.random() - 0.5);
+            const btnContainer = document.getElementById('g2-step-buttons');
+            btnContainer.innerHTML = shuffled.map(s => `
+                <button onclick="selectG2Step(${s.id}, '${s.icon}')" class="btn-card bg-amber-50 hover:bg-amber-100 border-2 border-amber-200 text-amber-900 font-bold p-4 rounded-2xl shadow flex items-center justify-center space-x-2">
+                    <span class="text-2xl">${s.icon}</span>
+                    <span class="text-sm">${s.text}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectG2Step(stepId, icon) {
+            playSound('click');
+            const expectedNext = state.g2CurrentSequence.length + 1;
+
+            if (stepId === expectedNext) {
+                // Correct order selection
+                state.g2CurrentSequence.push(stepId);
+                const currentSlot = document.querySelector(`#slot-${state.g2CurrentSequence.length} .slot-content`);
+                currentSlot.innerHTML = `<span class="pop-in">${icon}</span>`;
+
+                if (state.g2CurrentSequence.length === 3) {
+                    // Sequence completed
+                    playSound('correct');
+                    addStars(1);
+                    setTimeout(() => {
+                        state.g2Idx++;
+                        if (state.g2Idx < g2Data.length) {
+                            loadG2Question();
+                        } else {
+                            showScreen('game-level-3');
+                            loadG3Question();
+                        }
+                    }, 800);
+                }
+            } else {
+                // Wrong sequence click
+                playSound('wrong');
+                showToast("ลำดับขั้นตอนยังไม่ถูกต้อง! ลองเริ่มเรียงใหม่ดูนะ 🔄");
+                // Reset slots
+                state.g2CurrentSequence = [];
+                for (let i = 1; i <= 3; i++) {
+                    document.querySelector(`#slot-${i} .slot-content`).innerHTML = '?';
+                }
+            }
+        }
+
+        // -------------------------------------------------------------
+        // LEVEL 3: TOOL SELECTION (เลือกเครื่องมือแก้ปัญหา)
+        // -------------------------------------------------------------
+        const g3Questions = [
+            {
+                problem: "มีน้ำหวานหกเลอะเทอะเต็มพื้นห้อง!",
+                icon: "🧃",
+                correctTool: "ไม้กวาดและผ้าเช็ดพื้น",
+                tools: [
+                    { name: "ไม้กวาดและผ้าเช็ดพื้น", icon: "🧹" },
+                    { name: "ช้อนและส้อม", icon: "🍴" },
+                    { name: "หูฟังฟังเพลง", icon: "🎧" }
+                ]
+            },
+            {
+                problem: "ฝนตกหนัก แต่จำเป็นต้องเดินออกไปนอกบ้าน",
+                icon: "🌧️",
+                correctTool: "ร่มกันฝน",
+                tools: [
+                    { name: "แว่นตากันแดด", icon: "🕶️" },
+                    { name: "ร่มกันฝน", icon: "☂️" },
+                    { name: "พัดลมมือถือ", icon: "🪭" }
+                ]
+            },
+            {
+                problem: "เศษกระดาษเหลาซอยกระจายเต็มโต๊ะเรียน",
+                icon: "🗑️",
+                correctTool: "ถังขยะและที่ตักผง",
+                tools: [
+                    { name: "กรรไกรตัดกระดาษ", icon: "✂️" },
+                    { name: "กระติกน้ำดื่ม", icon: "🥤" },
+                    { name: "ถังขยะและที่ตักผง", icon: "🗑️" }
+                ]
+            }
+        ];
+
+        function loadG3Question() {
+            const q = g3Questions[state.g3Idx];
+            document.getElementById('g3-progress').innerText = `ข้อ ${state.g3Idx + 1}/${g3Questions.length}`;
+            document.getElementById('g3-problem-title').innerText = q.problem;
+            document.getElementById('g3-problem-icon').innerText = q.icon;
+
+            const grid = document.getElementById('g3-tools-grid');
+            grid.innerHTML = q.tools.map(tool => `
+                <button onclick="checkG3Choice('${tool.name}')" class="btn-card bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-200 text-emerald-900 font-bold p-5 rounded-2xl shadow flex flex-col items-center justify-center space-y-2">
+                    <span class="text-4xl">${tool.icon}</span>
+                    <span class="text-base">${tool.name}</span>
+                </button>
+            `).join('');
+        }
+
+        function checkG3Choice(selectedName) {
+            const q = g3Questions[state.g3Idx];
+            if (selectedName === q.correctTool) {
+                playSound('correct');
+                addStars(1);
+                state.g3Idx++;
+                if (state.g3Idx < g3Questions.length) {
+                    loadG3Question();
+                } else {
+                    showScreen('game-level-4');
+                    initRobotGrid();
+                }
+            } else {
+                playSound('wrong');
+                showToast("เครื่องมือนี้ยังไม่เหมาะในการแก้ปัญหานี้นะจ๊ะ ❌");
+            }
+        }
+
+        // -------------------------------------------------------------
+        // LEVEL 4: ROBOT PATH LOGIC (เดินหน้าแก้ปัญหา)
+        // -------------------------------------------------------------
+        function initRobotGrid() {
+            state.robotPos = { r: 0, c: 0 };
+            state.robotGoal = { r: 2, c: 2 };
+            state.robotCommands = [];
+            renderGridBoard();
+            updateCommandUI();
+        }
+
+        function resetRobotGrid() {
+            playSound('click');
+            initRobotGrid();
+        }
+
+        function renderGridBoard() {
+            const container = document.getElementById('robot-grid');
+            container.innerHTML = '';
+
+            for (let r = 0; r < 3; r++) {
+                for (let c = 0; c < 3; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'bg-white rounded-xl flex items-center justify-center text-3xl shadow-inner relative';
+                    
+                    if (r === state.robotPos.r && c === state.robotPos.c) {
+                        cell.innerHTML = '<span class="pop-in">🤖</span>';
+                        cell.classList.add('bg-purple-100', 'border-2', 'border-purple-400');
+                    } else if (r === state.robotGoal.r && c === state.robotGoal.c) {
+                        cell.innerHTML = '🗑️';
+                        cell.classList.add('bg-emerald-50');
+                    } else if (r === 1 && c === 1) {
+                        cell.innerHTML = '🧃'; // Waste item on path
+                    }
+
+                    container.appendChild(cell);
+                }
+            }
+        }
+
+        function addCommand(dir) {
+            if (state.robotCommands.length >= 4) {
+                showToast("วางแผนได้สูงสุด 4 ขั้นตอนครับ!");
+                return;
+            }
+            playSound('click');
+            state.robotCommands.push(dir);
+            updateCommandUI();
+        }
+
+        function clearCommands() {
+            playSound('click');
+            state.robotCommands = [];
+            updateCommandUI();
+        }
+
+        function updateCommandUI() {
+            const queue = document.getElementById('command-queue');
+            if (state.robotCommands.length === 0) {
+                queue.innerHTML = '<span class="text-xs text-slate-400">กดลูกศรเพื่อเพิ่มขั้นตอน...</span>';
+                return;
+            }
+
+            const arrowIcons = {
+                up: '⬆️',
+                down: '⬇️',
+                left: '⬅️',
+                right: '➡️'
+            };
+
+            queue.innerHTML = state.robotCommands.map((cmd, idx) => `
+                <div class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-1 rounded-lg border border-purple-200 flex items-center space-x-1">
+                    <span>${idx + 1}.</span>
+                    <span>${arrowIcons[cmd]}</span>
+                </div>
+            `).join('');
+        }
+
+        function runRobotProgram() {
+            if (state.robotCommands.length === 0) {
+                showToast("กรุณาเพิ่มปุ่มลูกศรเพื่อวางแผนก่อนนะครับ!");
+                return;
+            }
+
+            let currR = 0;
+            let currC = 0;
+            let step = 0;
+
+            const interval = setInterval(() => {
+                if (step >= state.robotCommands.length) {
+                    clearInterval(interval);
+                    // Check win condition
+                    if (currR === state.robotGoal.r && currC === state.robotGoal.c) {
+                        playSound('win');
+                        addStars(3);
+                        setTimeout(() => {
+                            showScreen('summary-screen');
+                        }, 500);
+                    } else {
+                        playSound('wrong');
+                        showToast("หุ่นยนต์ยังเดินไปไม่ถึงถังขยะ ลองวางแผนเส้นทางใหม่นะ!");
+                        state.robotPos = { r: 0, c: 0 };
+                        renderGridBoard();
+                    }
+                    return;
+                }
+
+                const cmd = state.robotCommands[step];
+                if (cmd === 'up' && currR > 0) currR--;
+                if (cmd === 'down' && currR < 2) currR++;
+                if (cmd === 'left' && currC > 0) currC--;
+                if (cmd === 'right' && currC < 2) currC++;
+
+                state.robotPos = { r: currR, c: currC };
+                playSound('click');
+                renderGridBoard();
+                step++;
+            }, 600);
+        }
+
+        // Certificate Generator Function
+        function updateCertificate() {
+            const name = document.getElementById('student-name-input').value.trim();
+            if (!name) {
+                showToast("กรุณาพิมพ์ชื่อ-นามสกุลก่อนนะครับ");
+                return;
+            }
+            playSound('correct');
+            document.getElementById('cert-student-name').innerText = name;
+            document.getElementById('certificate-preview').classList.remove('hidden');
+        }
+
+        // Custom Toast Notification System
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-800 text-white font-bold text-sm px-5 py-3 rounded-2xl shadow-2xl z-50 pop-in border border-slate-700';
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 2500);
+        }
+
+        // Initialize App
+        window.onload = function() {
+            renderLesson();
+        };
+    </script>
+</body>
+</html>
